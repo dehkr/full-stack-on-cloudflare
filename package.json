@@ -1,0 +1,11 @@
+{
+  "name": "full-stack-on-cloudlare-starter-repo",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
