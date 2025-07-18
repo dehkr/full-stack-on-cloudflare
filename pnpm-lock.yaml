@@ -6,7 +6,11 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      '@types/node':
+        specifier: ^22.15.33
+        version: 22.15.33
 
   apps/data-service:
     dependencies:
