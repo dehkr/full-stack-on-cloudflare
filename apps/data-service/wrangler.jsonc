@@ -11,6 +11,9 @@
 	"observability": {
 		"enabled": true,
 	},
+	"browser": {
+		"binding": "VIRTUAL_BROWSER",
+	},
 	"d1_databases": [
 	    {
 			"binding": "DB",
@@ -44,5 +47,12 @@
 				"queue": "smart-links-data-queue-stage",
 			}
 		]
-	}
+	},
+	"workflows": [
+		{
+			"binding": "DESTINATION_EVALUATION_WORKFLOW",
+			"name": "destination-evaluation-workflow",
+			"class_name": "DestinationEvaluationWorkflow"
+		}
+	]
 }
