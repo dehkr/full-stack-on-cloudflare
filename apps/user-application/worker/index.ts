@@ -5,7 +5,7 @@ import { initDatabase } from "@repo/data-ops/database";
 
 export default {
   fetch(request, env, ctx) {
-    initDatabase(env.DB)
+    initDatabase(env.DB);
     const url = new URL(request.url);
 
     if (url.pathname.startsWith("/trpc")) {
@@ -17,6 +17,13 @@ export default {
           createContext({ req: request, env: env, workerCtx: ctx }),
       });
     }
+    // if (url.pathname.startsWith("/click-socket")) {
+    //   return fetch(request, {
+    //     headers: {
+    //       "account-id": "1234567890",
+    //     },
+    //   });
+    // }
     return env.ASSETS.fetch(request);
   },
 } satisfies ExportedHandler<ServiceBindings>;
