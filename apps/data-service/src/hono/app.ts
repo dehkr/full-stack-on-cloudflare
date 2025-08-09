@@ -10,6 +10,7 @@ import { Hono } from 'hono';
 export const App = new Hono<{ Bindings: Env }>();
 
 
+
 App.get('/:id', async (c) => {
     const id = c.req.param('id');
 
