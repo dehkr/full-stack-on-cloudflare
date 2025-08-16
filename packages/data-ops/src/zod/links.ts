@@ -25,7 +25,6 @@ export const linkSchema = z.object({
   created: z.string(),
   updated: z.string(),
 });
-
 export const createLinkSchema = linkSchema.omit({
   created: true,
   updated: true,
