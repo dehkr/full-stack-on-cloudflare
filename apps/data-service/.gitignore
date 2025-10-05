@@ -73,6 +73,10 @@ web_modules/
 
 .stylelintcache
 
+# Mac OS
+
+.DS_Store
+
 # Microbundle cache
 
 .rpt2_cache/

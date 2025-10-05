@@ -1,4 +1,5 @@
 .env
 .dist
+.DS_Store
 better-auth_migrations
 node_modules
