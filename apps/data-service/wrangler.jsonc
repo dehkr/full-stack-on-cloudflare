@@ -7,15 +7,24 @@
 	"name": "data-service",
 	"main": "src/index.ts",
 	"compatibility_date": "2025-06-17",
-	"compatibility_flags": ["nodejs_compat"],
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
 	"observability": {
 		"enabled": true,
 	},
 	"d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "smart-links-stage",
-      "database_id": "e1a0ef31-b6e5-4029-9e3c-9f1d605172db",
+		{
+			"binding": "DB",
+			"database_name": "smart-links-stage",
+			"database_id": "e1a0ef31-b6e5-4029-9e3c-9f1d605172db",
+			"remote": true
+		}
+	],
+	"kv_namespaces": [
+		{
+      "binding": "CACHE",
+      "id": "c1eecde8dc9f4b9689bc81340375d0e2",
       "remote": true
     }
   ]
