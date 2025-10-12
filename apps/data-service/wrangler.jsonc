@@ -14,7 +14,10 @@
     "enabled": true,
   },
   "browser": {
-    "binding": "VIRTUAL_BROWSER",
+    "binding": "VIRTUAL_BROWSER"
+  },
+  "ai": {
+    "binding": "AI"
   },
   "d1_databases": [
     {
