@@ -3,6 +3,7 @@ import { collectDestinationInfo } from '@/helpers/browser-render';
 import { aiDestinationChecker } from '@/helpers/ai-destination-checker';
 import { addEvaluation } from '@repo/data-ops/queries/evaluations';
 import { initDatabase } from '@repo/data-ops/database';
+import { v4 as uuidv4 } from 'uuid';
 
 export class DestinationEvaluationWorkflow extends WorkflowEntrypoint<
   Env,
@@ -14,10 +15,34 @@ export class DestinationEvaluationWorkflow extends WorkflowEntrypoint<
   ) {
     initDatabase(this.env.DB);
 
-    const collectedData = await step.do(
+    const evaluationInfo = await step.do(
       'Collect rendered destination page data',
+      {
+        retries: {
+          limit: 1,
+          delay: 1000,
+        },
+      },
       async () => {
-        return collectDestinationInfo(this.env, event.payload.destinationUrl);
+        const evaluationId = uuidv4();
+        const data = await collectDestinationInfo(this.env, event.payload.destinationUrl);
+        const accountId = event.payload.accountId;
+        const r2PathHtml = `evaluations/${accountId}/html/${evaluationId}.html`;
+        const r2PathBodyText = `evaluations/${accountId}/body-text/${evaluationId}.txt`;
+        const r2PathScreenshot = `evaluations/${accountId}/screenshots/${evaluationId}.png`;
+
+        // Convert base64 data URL to buffer for R2 storage
+        const screenshotBase64 = data.screenshotDataUrl.replace(/^data:image\/png;base64,/, '');
+        const screenshotBuffer = Buffer.from(screenshotBase64, 'base64');
+
+        await this.env.BUCKET.put(r2PathHtml, data.html);
+        await this.env.BUCKET.put(r2PathBodyText, data.bodyText);
+        await this.env.BUCKET.put(r2PathScreenshot, screenshotBuffer);
+
+        return {
+          bodyText: data.bodyText,
+          evaluationId: evaluationId,
+        };
       },
     );
 
@@ -30,31 +55,21 @@ export class DestinationEvaluationWorkflow extends WorkflowEntrypoint<
         },
       },
       async () => {
-        return await aiDestinationChecker(this.env, collectedData.bodyText);
+        return await aiDestinationChecker(this.env, evaluationInfo.bodyText);
       },
     );
 
-    const evaluationId = await step.do(
+    await step.do(
       'Save evaluation in database',
       async () => {
         return await addEvaluation({
+          evaluationId: evaluationInfo.evaluationId,
           linkId: event.payload.linkId,
           status: aiStatus.status,
           reason: aiStatus.statusReason,
           accountId: event.payload.accountId,
           destinationUrl: event.payload.destinationUrl,
         });
-      },
-    );
-
-    await step.do(
-      'Backup destination HTML in R2',
-      async () => {
-        const accountId = event.payload.accountId;
-        const r2PathHtml = `evaluations/${accountId}/html/${evaluationId}`;
-        const r2PathBodyText = `evaluations/${accountId}/body-text/${evaluationId}`;
-        await this.env.BUCKET.put(r2PathHtml, collectedData.html);
-        await this.env.BUCKET.put(r2PathBodyText, collectedData.bodyText);
       },
     );
   }
