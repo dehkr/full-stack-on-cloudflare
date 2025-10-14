@@ -13,7 +13,7 @@ export const evaluationsTrpcRoutes = t.router({
   recentEvaluations: t.procedure
     .input(z.object({ createdBefore: z.string().optional() }).optional())
     .query(async ({ ctx }) => {
-      const evaluations = await getEvaluations('testaccountid');
+      const evaluations = await getEvaluations(ctx.userInfo.userId);
 
       const oldestCreatedAt =
         evaluations.length > 0

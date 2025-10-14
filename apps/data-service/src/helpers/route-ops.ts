@@ -1,5 +1,6 @@
 import { getLink } from '@repo/data-ops/queries/links';
 import { linkSchema, LinkSchemaType } from '@repo/data-ops/zod-schema/links';
+import { LinkClickMessageType } from '@repo/data-ops/zod-schema/queue';
 
 const TTL_TIME = 60 * 60 * 24; // 1 day
 
@@ -62,4 +63,18 @@ export function getDestinationForCountry(linkInfo: LinkSchemaType, countryCode?:
   }
 
   return linkInfo.destinations.default;
+}
+
+/**
+ * Schedule web page evaluation workflow.
+ */
+export async function scheduleEvalWorkflow(env: Env, event: LinkClickMessageType) {
+  const doId = env.EVALUATION_SCHEDULER.idFromName(`${event.data.id}:${event.data.destination}`);
+  const stub = env.EVALUATION_SCHEDULER.get(doId);
+  await stub.collectLinkClick(
+    event.data.accountId,
+    event.data.id,
+    event.data.destination,
+    event.data.country || 'UNKNOWN',
+  )
 }
