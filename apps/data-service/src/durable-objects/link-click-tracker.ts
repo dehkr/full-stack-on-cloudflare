@@ -9,14 +9,16 @@ export class LinkClickTracker extends DurableObject {
     this.sql = ctx.storage.sql;
 
     ctx.blockConcurrencyWhile(async () => {
-      this.sql.exec(`
-            CREATE TABLE IF NOT EXISTS geo_link_clicks (
-                latitude REAL NOT NULL,
-                longitude REAL NOT NULL,
-                country TEXT NOT NULL,
-                time INTEGER NOT NULL
-            )
-        `);
+      this.sql.exec(
+        `
+        CREATE TABLE IF NOT EXISTS geo_link_clicks (
+          latitude REAL NOT NULL,
+          longitude REAL NOT NULL,
+          country TEXT NOT NULL,
+          time INTEGER NOT NULL
+        )
+        `,
+      );
     });
   }
 
@@ -34,24 +36,14 @@ export class LinkClickTracker extends DurableObject {
   }
 
   async fetch(_: Request) {
-    const query = `
-      SELECT *
-      FROM geo_link_clicks
-      limit 100
-    `;
+    const webSocketPair = new WebSocketPair();
+    const [client, server] = Object.values(webSocketPair);
+    
+    this.ctx.acceptWebSocket(server);
 
-    const cursor = this.sql.exec(query);
-    const results = cursor.toArray();
-
-    return new Response(
-      JSON.stringify({
-        clicks: results,
-      }),
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
+    return new Response(null, {
+      status: 101,
+      webSocket: client,
+    });
   }
 }
