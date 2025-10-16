@@ -19,7 +19,14 @@
       "binding": "DB",
       "database_name": "smart-links-stage",
       "database_id": "e1a0ef31-b6e5-4029-9e3c-9f1d605172db",
-      "remote": true
-    }
-  ]
+      "remote": true,
+    },
+  ],
+  "services": [
+    {
+      "binding": "BACKEND_SERVICE",
+      "service": "data-service",
+      "remote": true,
+    },
+  ],
 }
