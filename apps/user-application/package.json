@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite --port 3000 --mode development",
     "start": "vite --port 3000",
-    "build": "vite build && tsc",
+    "build": "vite build --mode development && tsc",
     "production:build": "vite build --mode production && tsc",
     "serve": "vite preview",
     "test": "vitest run",
@@ -67,7 +67,7 @@
     "vaul": "^1.1.2",
     "world-countries": "^5.1.0",
     "ws": "link:@trpc/server/adapters/ws",
-    "zod": "^3.25.67",
+    "zod": "^4.1.12",
     "zustand": "^5.0.6"
   },
   "devDependencies": {
@@ -84,6 +84,6 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4",
     "web-vitals": "^4.2.4",
-    "wrangler": "^4.42.0"
+    "wrangler": "^4.45.3"
   }
 }

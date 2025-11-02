@@ -8,28 +8,28 @@
     "migrate": "drizzle-kit migrate --config drizzle.config.ts",
     "generate": "drizzle-kit generate --config drizzle.config.ts",
     "studio": "drizzle-kit studio --config drizzle.config.ts",
-    "better-auth-generate": "npx @better-auth/cli generate --config auth-gen/auth.ts"
+    "better-auth-generate": "npx @better-auth/cli generate --config auth-gen/auth.ts --output=src/drizzle-out/auth-schema.ts"
   },
   "exports": {
     "./database": {
-      "types": "./dist/db/database.d.ts",
-      "default": "./dist/db/database.js"
+      "types": "./dist/src/db/database.d.ts",
+      "default": "./dist/src/db/database.js"
     },
     "./queries/*": {
-      "types": "./dist/queries/*.d.ts",
-      "default": "./dist/queries/*.js"
+      "types": "./dist/src/queries/*.d.ts",
+      "default": "./dist/src/queries/*.js"
     },
     "./zod-schema/*": {
-      "types": "./dist/zod/*.d.ts",
-      "default": "./dist/zod/*.js"
+      "types": "./dist/src/zod/*.d.ts",
+      "default": "./dist/src/zod/*.js"
     },
     "./durable-objects-helpers": {
-      "types": "./dist/durable-objects-helpers/*.d.ts",
-      "default": "./dist/durable-objects-helpers/*.js"
+      "types": "./dist/src/durable-objects-helpers/*.d.ts",
+      "default": "./dist/src/durable-objects-helpers/*.js"
     },
     "./auth": {
-      "types": "./dist/better-auth/auth.d.ts",
-      "default": "./dist/better-auth/auth.js"
+      "types": "./dist/src/auth.d.ts",
+      "default": "./dist/src/auth.js"
     }
   },
   "keywords": [],
@@ -38,20 +38,20 @@
   "dependencies": {
     "@better-auth/stripe": "1.3.4",
     "better-auth": "1.3.4",
-    "better-sqlite3": "^12.2.0",
-    "drizzle-orm": "^0.44.2",
-    "kysely": "^0.28.2",
+    "better-sqlite3": "^12.4.1",
+    "drizzle-orm": "^0.44.6",
+    "kysely": "^0.28.8",
     "kysely-d1": "^0.4.0",
-    "nanoid": "^5.1.5",
-    "stripe": "^18.4.0",
+    "nanoid": "^5.1.6",
+    "stripe": "^18.5.0",
     "uuid": "^11.1.0",
-    "zod": "^3.25.67"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250405.0",
-    "@types/node": "^22.15.19",
-    "drizzle-kit": "^0.31.1",
+    "@cloudflare/workers-types": "^4.20251014.0",
+    "@types/node": "^22.18.12",
+    "drizzle-kit": "^0.31.5",
     "tsc-alias": "^1.8.16",
-    "wrangler": "^4.22.0"
+    "wrangler": "^4.43.0"
   }
 }

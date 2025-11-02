@@ -3,7 +3,7 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "bundler",
-
+    
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": false,
@@ -17,5 +17,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "auth-gen"]
 }
